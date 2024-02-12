@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactDOM } from "react";
+import { createPortal } from 'react-dom';
 
 import Card from "./Card";
 import Button from "./Button";
@@ -10,7 +10,7 @@ const Backdrop = (props) => {
 };
 
 const ModalOverlay = (props) => {
-  <Card className={classes.modal}>
+  return <Card className={classes.modal}>
     <header className={classes.header}>
       <h2>{props.title}</h2>
     </header>
@@ -24,18 +24,22 @@ const ModalOverlay = (props) => {
 };
 
 const ErrorModal = (props) => {
+  console.log("in errormodal",props)
+
   return (
     <React.Fragment>
-      {ReactDOM.createPortal(
+      {console.log(document.getElementById("overlay-root"))}
+      {createPortal(
         <Backdrop onConfirm={props.onConfirm} />,
         document.getElementById("backdrop-root")
       )}
-      {ReactDOM.createPortal(
+      {createPortal(
         <ModalOverlay
           title={props.title}
           message={props.message}
           onConfirm={props.onConfirm}
-        />,document.getElementById("overlay-root")
+        />,
+        document.getElementById("overlay-root")
       )}
     </React.Fragment>
   );
